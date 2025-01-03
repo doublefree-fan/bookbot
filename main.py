@@ -42,22 +42,19 @@ def print_report(book):
         book (str): path to the book file to analyze
     Returns:
         None: prints results to console
-    Notes:
-        Catches and prints any exceptions that occur during processing
+    Raises:
+        Exception: raises any exceptions that might occur during processing
     """
-    try:
-        contents = read_book(book)
-        num_words = count_words(contents)
-        num_chars = filter_non_letter_chars(count_characters(contents))
-        num_chars.sort(key=sort_by_frequency, reverse=True)
-        print(f"--- Begin report of {book} ---")
-        print(f"{num_words} found in the document\n")
-        for char_dict in num_chars:
-            for key in char_dict:
-                print(f"The '{key}' character was found {char_dict[key]} times")
-        print("--- End report ---")
-    except Exception as e:
-       print(e)
+    contents = read_book(book)
+    num_words = count_words(contents)
+    num_chars = filter_non_letter_chars(count_characters(contents))
+    num_chars.sort(key=sort_by_frequency, reverse=True)
+    print(f"--- Begin report of {book} ---")
+    print(f"{num_words} found in the document\n")
+    for char_dict in num_chars:
+        for key in char_dict:
+            print(f"The '{key}' character was found {char_dict[key]} times")
+    print("--- End report ---")
 
 def count_characters(book):
     """
@@ -111,7 +108,10 @@ def read_book(book_path):
         return book
 
 def main():
-    print_report(FRANKENSTEIN_PATH_FILE)
+    try:
+        print_report(FRANKENSTEIN_PATH_FILE)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     main()
