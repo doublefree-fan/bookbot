@@ -1,8 +1,29 @@
 from book_paths import FRANKENSTEIN_PATH_FILE
 
+def count_characters(book):
+    """
+    Counts the number of chars in a given book
+    Args:
+        book (str): the text of the book
+    Returns:
+        chars (dict): str -> int containing the number of each lowered char
+    Raises:
+        Exception: if book is not provided (empty string or None)
+    """
+    if not book:
+        raise Exception("book was not provided")
+    chars = dict()
+    lowercase_book = book.lower()
+    for char in lowercase_book:
+        if char not in chars:
+            chars[char] = 1
+        else:
+            chars[char] += 1
+    return chars
+
 def count_words(book):
     """
-    Counts the number of words in a given book.
+    Counts the number of words in a given book
     Args:
         book (str): the text of the book
     Returns:
@@ -34,7 +55,10 @@ def main():
     try:
         book = read_book(FRANKENSTEIN_PATH_FILE)
         book_words = count_words(book)
+        book_chars_count = count_characters(book)
         print(book_words)
+        for key in book_chars_count:
+            print(f'"{key}": "{book_chars_count[key]}"')
     except Exception as e:
         print(e)
 
