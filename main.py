@@ -1,5 +1,64 @@
 from book_paths import FRANKENSTEIN_PATH_FILE
 
+def filter_non_letter_chars(chars_dict):
+    """
+    Filters an item based on the key being a letter from the alphabet
+    Args:
+        chars_dict (dict): a str -> int where the key is a character and the value is the number of occurences
+    Returns:
+        list[dict]: a list where each dict contains exactly one key-value pair (char: count)
+    Raises:
+        Exception: if the char_dict is an empty or None
+    """
+    if not chars_dict:
+        raise Exception("no chars_dict was provided")
+    list_of_chars_dict = []
+    for char in chars_dict:
+        if char.isalpha():
+            list_of_chars_dict.append({
+                char: chars_dict[char]
+            })
+    return list_of_chars_dict
+
+def sort_by_frequency(char_dict):
+    """
+    Helper function to sort based on the number of occurences of a character
+    Intended to be used as a key function for sorting
+    Args:
+        char_dict (dict): where the key is a character and the value the number of occurences
+    Returns:
+        int: the number of occurences
+    Raises:
+        Exception: if char_dict is empty or None
+    """
+    if not char_dict:
+        raise Exception("no character dict provided")
+    return (list(char_dict.values())[0])
+
+def print_report(book):
+    """
+    Prints a formatted report of word count and character frequencies from a book.
+    Args:
+        book (str): path to the book file to analyze
+    Returns:
+        None: prints results to console
+    Notes:
+        Catches and prints any exceptions that occur during processing
+    """
+    try:
+        contents = read_book(book)
+        num_words = count_words(contents)
+        num_chars = filter_non_letter_chars(count_characters(contents))
+        num_chars.sort(key=sort_by_frequency, reverse=True)
+        print(f"--- Begin report of {book} ---")
+        print(f"{num_words} found in the document\n")
+        for char_dict in num_chars:
+            for key in char_dict:
+                print(f"The '{key}' character was found {char_dict[key]} times")
+        print("--- End report ---")
+    except Exception as e:
+       print(e)
+
 def count_characters(book):
     """
     Counts the number of chars in a given book
@@ -53,12 +112,7 @@ def read_book(book_path):
 
 def main():
     try:
-        book = read_book(FRANKENSTEIN_PATH_FILE)
-        book_words = count_words(book)
-        book_chars_count = count_characters(book)
-        print(book_words)
-        for key in book_chars_count:
-            print(f'"{key}": "{book_chars_count[key]}"')
+        print_report(FRANKENSTEIN_PATH_FILE)
     except Exception as e:
         print(e)
 
