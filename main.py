@@ -111,10 +111,7 @@ def read_book(book_path):
         return book
 
 def main():
-    try:
-        print_report(FRANKENSTEIN_PATH_FILE)
-    except Exception as e:
-        print(e)
+    print_report(FRANKENSTEIN_PATH_FILE)
 
 if __name__ == "__main__":
     main()
